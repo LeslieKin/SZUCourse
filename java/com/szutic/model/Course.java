@@ -131,19 +131,19 @@ public class Course {
     @Override
     public String toString() {
         String data = "Course[courseNumber : %s, courseName : %s, "
-            + "courseCredit : %s, courseStudentNumber : %s, "
-            + "courseLimitNumber : %s, kkdw : %s, "
-            + "courseType : %s, courseClass : %s, "
-            + "courseTeacher : %s, courseWeek : %s, "
-            + "courseTime : %s, courseLocation : %s, "
-            + "creditType : %s, courseDescription : %s\n]";
+                + "courseCredit : %s, courseStudentNumber : %s, "
+                + "courseLimitNumber : %s, kkdw : %s, "
+                + "courseType : %s, courseClass : %s, "
+                + "courseTeacher : %s, courseWeek : %s, "
+                + "courseTime : %s, courseLocation : %s, "
+                + "creditType : %s, courseDescription : %s]\n";
         return String.format(data,
-            courseNumber, courseName,
-            courseCredit, courseStudentNumber,
-            courseLimitNumber, kkdw,
-            courseType, courseClass,
-            courseTeacher, courseWeek,
-            courseTime, courseLocation,
-            creditType, courseDescription);
+                courseNumber, courseName,
+                courseCredit, courseStudentNumber,
+                courseLimitNumber, kkdw,
+                courseType, courseClass,
+                courseTeacher, courseWeek,
+                courseTime, courseLocation,
+                creditType, courseDescription);
     }
 }

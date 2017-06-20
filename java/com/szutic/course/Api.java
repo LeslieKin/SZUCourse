@@ -4,7 +4,6 @@ import com.szutic.model.Course;
 import com.szutic.model.SZUStudent;
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.NameValuePair;
-import org.apache.commons.httpclient.URI;
 import org.apache.commons.httpclient.UsernamePasswordCredentials;
 import org.apache.commons.httpclient.auth.AuthScope;
 import org.apache.commons.httpclient.methods.GetMethod;
@@ -27,6 +26,7 @@ public class Api {
         client = new HttpClient();
     }
 
+    // 如果不在校内网，需要设置代理
     public Api(String studentNumber, String studentPassword) {
         client = new HttpClient();
         client.getHostConfiguration().setProxy("proxy.szu.edu.cn", 8080);
@@ -36,11 +36,11 @@ public class Api {
     }
 
     public List<String> fetchXQHs() throws IOException {
-        String contextUrl = "http://192.168.2.229/newkc/content.asp";
-        GetMethod getMethod = new GetMethod(contextUrl);
-        client.executeMethod(getMethod);
+        String contentUrl = "http://192.168.2.229/newkc/content.asp";
+        GetMethod contentMethod = new GetMethod(contentUrl);
+        client.executeMethod(contentMethod);
 
-        String html = new String(getMethod.getResponseBody(), "GB2312");
+        String html = new String(contentMethod.getResponseBody(), "GB2312");
         Document document = Jsoup.parse(html);
         Elements as = document.getElementsByTag("a");
         int size = null == as ? 0 : as.size();
@@ -49,20 +49,19 @@ public class Api {
             String xqhUrl = as.get(i).attr("href");
             xqhs.add(xqhUrl.substring("akcjj0.asp?xqh=".length()));
         }
-
         return xqhs;
     }
 
     public List<String> fetchKKDWs(String xqh) throws IOException {
         String xqhUrl = "http://192.168.2.229/newkc/akcjj0.asp?xqh=" + xqh;
-        GetMethod getMethod = new GetMethod(xqhUrl);
-        client.executeMethod(getMethod);
+        GetMethod xqhMethod = new GetMethod(xqhUrl);
+        client.executeMethod(xqhMethod);
 
         String kkdwUrl = "http://192.168.2.229/newkc/akechengdw.asp";
-        getMethod = new GetMethod(kkdwUrl);
-        client.executeMethod(getMethod);
+        GetMethod kkdwMethod = new GetMethod(kkdwUrl);
+        client.executeMethod(kkdwMethod);
 
-        String html = new String(getMethod.getResponseBody(), "gb2312");
+        String html = new String(kkdwMethod.getResponseBody(), "gb2312");
         Document document = Jsoup.parse(html);
         Elements options = document.getElementsByTag("option");
         return options.stream()
@@ -72,17 +71,17 @@ public class Api {
 
     public List<Course> fetchCourses(String xqh, String kkdw) throws IOException {
         String xqhUrl = "http://192.168.2.229/newkc/akcjj0.asp?xqh=" + xqh;
-        GetMethod getMethod = new GetMethod(xqhUrl);
-        client.executeMethod(getMethod);
+        GetMethod xqhMethod = new GetMethod(xqhUrl);
+        client.executeMethod(xqhMethod);
 
         String courseUrl = "http://192.168.2.229/newkc/kccx.asp?flag=kkdw";
-        PostMethod postMethod = new PostMethod(courseUrl);
-        postMethod.setRequestBody(new NameValuePair[]{
+        PostMethod courseMethod = new PostMethod(courseUrl);
+        courseMethod.setRequestBody(new NameValuePair[]{
                 new NameValuePair("bh", kkdw)
         });
-        client.executeMethod(postMethod);
+        client.executeMethod(courseMethod);
 
-        String html = new String(postMethod.getResponseBody(), "gb2312");
+        String html = new String(courseMethod.getResponseBody(), "gb2312");
         Document document = Jsoup.parse(html);
         Elements trs = document.getElementsByTag("tr");
         int size = null == trs ? 0 : trs.size();
@@ -116,20 +115,19 @@ public class Api {
         return courses;
     }
 
-    public List<SZUStudent> fetchStudents(String xqh, String kkdw, String courseNumber)
-            throws IOException {
+    public List<SZUStudent> fetchStudents(String xqh, String kkdw, String courseNumber) throws IOException {
         String xqhUrl = "http://192.168.2.229/newkc/akcjj0.asp?xqh=" + xqh;
-        GetMethod getMethod = new GetMethod(xqhUrl);
-        client.executeMethod(getMethod);
+        GetMethod xqhMethod = new GetMethod(xqhUrl);
+        client.executeMethod(xqhMethod);
 
         String studentUrl = "http://192.168.2.229/newkc/kcxkrs.asp";
-        getMethod.setURI(new URI(studentUrl, false));
-        getMethod.setQueryString(new NameValuePair[]{
+        GetMethod studentMethod = new GetMethod(studentUrl);
+        studentMethod.setQueryString(new NameValuePair[]{
                 new NameValuePair("ykch", courseNumber)
         });
-        client.executeMethod(getMethod);
+        client.executeMethod(studentMethod);
 
-        String html = new String(getMethod.getResponseBody(), "gb2312");
+        String html = new String(studentMethod.getResponseBody(), "gb2312");
         Document document = Jsoup.parse(html);
         Elements trs = document.getElementsByTag("tr");
         int size = null == trs ? 0 : trs.size();

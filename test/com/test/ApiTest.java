@@ -10,22 +10,22 @@ public class ApiTest {
     private Api api = new Api();
 
     @Test
-    public void testContext() throws IOException {
+    public void testXqhs() throws IOException {
         System.out.println(api.fetchXQHs());
     }
 
     @Test
-    public void testKkdw() throws IOException {
+    public void testKkdws() throws IOException {
         System.out.println(api.fetchKKDWs("20161"));
     }
 
     @Test
-    public void testCourse() throws IOException {
+    public void testCourses() throws IOException {
         System.out.println(api.fetchCourses("20161", "MOOC"));
     }
 
     @Test
-    public void testStudent() throws IOException {
+    public void testStudents() throws IOException {
         System.out.println(api.fetchStudents("20161", "MOOC", "MC99000101"));
     }
 

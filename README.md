@@ -6,4 +6,4 @@
   - JDK8
   - IntelliJ IDEA
 
-Example in test/com/test/ApiTest
+例子在test/com/test/ApiTest中

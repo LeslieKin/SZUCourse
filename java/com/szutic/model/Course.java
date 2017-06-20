@@ -136,7 +136,7 @@ public class Course {
             + "courseType : %s, courseClass : %s, "
             + "courseTeacher : %s, courseWeek : %s, "
             + "courseTime : %s, courseLocation : %s, "
-            + "creditType : %s, courseDescription : %s]";
+            + "creditType : %s, courseDescription : %s\n]";
         return String.format(data,
             courseNumber, courseName,
             courseCredit, courseStudentNumber,

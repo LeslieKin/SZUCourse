@@ -42,7 +42,7 @@ public class SZUStudent {
   @Override
   public String toString() {
     String data = "SZUStudent[studentNumber : %s, studentName : %s, "
-        + "studentSex : %s, studentClass : %s]";
+        + "studentSex : %s, studentClass : %s\n]";
     return String.format(data,
         studentNumber, studentName,
         studentSex, studentClass);
